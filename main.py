@@ -40,14 +40,18 @@ while num_of_correct < len(data.state):
     # if answer is correct and it has not been labeled
     if not state_info.empty and answer_state not in correct_states:
         # get x, y value of the state
-        state_x = state_info.x.iloc[0]
-        state_y = state_info.y.iloc[0]
+        # state_x = state_info.x.iloc[0]
+        # state_y = state_info.y.iloc[0]
+        state_x = state_info.x.item()
+        state_y = state_info.y.item()
         print(state_x)
         print(state_y)
 
         # label the state on the map
         label.update_map(answer_state, state_x, state_y)
+        # keep score
         num_of_correct +=1
+        # add the answer to the correct states list
         correct_states.append(answer_state)
 
 # keep display of the screen
