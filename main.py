@@ -22,6 +22,7 @@ data = pd.read_csv("50_states.csv")
 print(data.state)
 
 num_of_correct = 0
+correct_states = []
 
 while num_of_correct < len(data.state):
     if num_of_correct == 0:
@@ -36,8 +37,8 @@ while num_of_correct < len(data.state):
     state_info = data[data.state == answer_state.title()]
     print(state_info)
 
-    # if answer is correct
-    if not state_info.empty:
+    # if answer is correct and it has not been labeled
+    if not state_info.empty and answer_state not in correct_states:
         # get x, y value of the state
         state_x = state_info.x.iloc[0]
         state_y = state_info.y.iloc[0]
@@ -47,6 +48,7 @@ while num_of_correct < len(data.state):
         # label the state on the map
         label.update_map(answer_state, state_x, state_y)
         num_of_correct +=1
+        correct_states.append(answer_state)
 
 # keep display of the screen
 t.mainloop()
