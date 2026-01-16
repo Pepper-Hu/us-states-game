@@ -15,19 +15,21 @@ screen.bgpic(image)
 #     print(x, y)
 # t.onscreenclick(get_mouse_click_coordinates)
 
-# keep display of the screen
-
 label = Label()
 
 # get data frame
 data = pd.read_csv("50_states.csv")
 print(data.state)
 
-num_of_states = len(data.state)
+num_of_correct = 0
 
-while num_of_states > 0:
+while num_of_correct < len(data.state):
+    if num_of_correct == 0:
+        input_title = "Guess the state"
+    else:
+        input_title = f"{num_of_correct}/{len(data.state)} States Correct"
     # get user's answer
-    answer_state = screen.textinput(title="Guess the state", prompt="What is another state's name?")
+    answer_state = screen.textinput(title=input_title, prompt="What is another state's name?")
     print(answer_state.title())
 
     # get the row that matches user's answer
@@ -44,7 +46,8 @@ while num_of_states > 0:
 
         # label the state on the map
         label.update_map(answer_state, state_x, state_y)
-        num_of_states -=1
+        num_of_correct +=1
 
+# keep display of the screen
 t.mainloop()
 
