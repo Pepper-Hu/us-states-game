@@ -19,23 +19,25 @@ label = Label()
 
 # get data frame
 data = pd.read_csv("50_states.csv")
-print(data.state)
+# print(data.state)
 
-num_of_correct = 0
 correct_states = []
-
-while num_of_correct < len(data.state):
-    if num_of_correct == 0:
+while len(correct_states) < len(data.state):
+    if len(correct_states) == 0:
         input_title = "Guess the state"
     else:
-        input_title = f"{num_of_correct}/{len(data.state)} States Correct"
+        input_title = f"{len(correct_states)}/{len(data.state)} States Correct"
     # get user's answer
-    answer_state = screen.textinput(title=input_title, prompt="What is another state's name?")
-    print(answer_state.title())
+    answer_state = screen.textinput(title=input_title, prompt="What is another state's name?").title()
+    # print(answer_state)
+
+    # Exit the game and close the screen
+    if answer_state == "Exit":
+        break
 
     # get the row that matches user's answer
-    state_info = data[data.state == answer_state.title()]
-    print(state_info)
+    state_info = data[data.state == answer_state]
+    # print(state_info)
 
     # if answer is correct and it has not been labeled
     if not state_info.empty and answer_state not in correct_states:
@@ -44,16 +46,22 @@ while num_of_correct < len(data.state):
         # state_y = state_info.y.iloc[0]
         state_x = state_info.x.item()
         state_y = state_info.y.item()
-        print(state_x)
-        print(state_y)
+        # print(state_x)
+        # print(state_y)
 
         # label the state on the map
         label.update_map(answer_state, state_x, state_y)
-        # keep score
-        num_of_correct +=1
+
         # add the answer to the correct states list
         correct_states.append(answer_state)
 
 # keep display of the screen
-t.mainloop()
+# t.mainloop()
 
+# remove the rows that match with the correct states
+data_filtered = data[~data.state.isin(correct_states)]
+# print(data_filtered.state)
+print(len(data_filtered))
+
+# save the states to a csv file
+data_filtered.state.to_csv("states_to_learn.csv", index=False)
